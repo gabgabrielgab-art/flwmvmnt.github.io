@@ -35,7 +35,7 @@
 
 <main style="position: relative; min-height: 100svh; overflow: hidden; background: var(--bone); font-family: var(--font-display); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(20px, 4vh, 48px); padding: clamp(20px, 3vh, 48px) clamp(20px, 4vw, 56px);">
 
-  <img ref="{{ imgRef }}" src="assets/silhouettes-in-motion.jpg" alt="Three FL:W+ athletes silhouetted mid-jump against a bone-coloured wall" style="position: absolute; top: 0; right: 0; bottom: 0; width: 84%; height: 100%; object-fit: contain; object-position: 100% 100%; transform: scale(1.34); transform-origin: 88% 100%;">
+  <img ref="{{ imgRef }}" src="assets/silhouettes-in-motion.jpg" alt="Three FL:W+ athletes silhouetted mid-jump against a bone-coloured wall" style="position: absolute; top: 0; right: 0; bottom: 0; width: 84%; height: 100%; object-fit: contain; object-position: 100% 100%; transform: scale(1.34); transform-origin: 88% 0%;">
 
   <div aria-hidden="true" style="{{ scrimStyle }}"></div>
 
@@ -104,6 +104,9 @@ class Component extends DCLogic {
     // then sits over photography, give it an opaque Bone panel so every string
     // keeps full-contrast ink on a solid ground rather than relying on the scrim.
     const narrow = window.innerWidth < 760;
+    // Wide layouts: scale from the top edge, not the bottom, so growing the
+    // image never pushes the athletes' heads above the frame — it's the
+    // ground/legs that give way instead.
     const el = this.imgRef.current;
     if (el) {
       const src = IMAGES[this.props.heroImage] || IMAGES['Silhouettes in motion'];
@@ -113,7 +116,7 @@ class Component extends DCLogic {
             objectFit: 'cover', objectPosition: '72% 22%', transform: 'none' }
         : { top: '0', right: '0', bottom: '0', width: '84%', height: '100%',
             objectFit: 'contain', objectPosition: '100% 100%',
-            transform: 'scale(1.34)', transformOrigin: '88% 100%' });
+            transform: 'scale(1.34)', transformOrigin: '88% 0%' });
     }
     // Glass panel: the design system's own header recipe — Bone at 88% behind
     // --blur-glass — so ink keeps its contrast over photography.
