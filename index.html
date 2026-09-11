@@ -57,9 +57,9 @@
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
       <form onSubmit="{{ onSubmit }}" novalidate="{{ true }}" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
         <div style="flex: 1 1 260px; min-width: 0;">
-          <x-import component-from-global-scope="FLWDesignSystem_4c3784.Input" label="Email address — be first through the door" type="email" placeholder="name@domain.com" value="{{ email }}" onChange="{{ onEmailChange }}" error="{{ error }}" hint-size="100%,72px"></x-import>
+          <x-import component-from-global-scope="FLWDesignSystem_4c3784.Input" label="Email address — be first through the door" type="email" placeholder="name@domain.com" value="{{ email }}" onChange="{{ onEmailChange }}" error="{{ error }}" disabled="{{ submitting }}" hint-size="100%,72px"></x-import>
         </div>
-        <x-import component-from-global-scope="FLWDesignSystem_4c3784.Button" variant="{{ buttonVariant }}" size="m" type="submit" style="{{ buttonStyle }}" hint-size="150px,46px">Notify me</x-import>
+        <x-import component-from-global-scope="FLWDesignSystem_4c3784.Button" variant="{{ buttonVariant }}" size="m" type="submit" disabled="{{ submitting }}" style="{{ buttonStyle }}" hint-size="150px,46px">{{ buttonLabel }}</x-import>
       </form>
     </sc-if>
 
@@ -92,6 +92,18 @@ const IMAGE_ALT = {
   'Split lunge': 'An FL:W+ athlete mid split-lunge, fabric stretching with the movement',
   'Fabric macro': 'Macro detail of FL:W+ performance fabric'
 };
+// Formspree endpoint for the signup form. Create a form at https://formspree.io
+// (use gabgabrielgab@gmail.com as the account/notification email so signups land
+// there), then replace YOUR_FORM_ID below with the ID it gives you — the URL
+// shown in your Formspree dashboard is exactly this shape.
+// Confirmation email to the person who signs up (an "autoresponse") is a
+// Formspree plugin you turn on in that form's dashboard, not something this
+// file can set. Note: Formspree sends autoresponses from its own address —
+// getting the "From" to genuinely read flw@flwmvmnt.com needs that domain
+// verified (SPF/DKIM) with a transactional email provider, which is a
+// separate, bigger setup than Formspree covers on its own.
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
 const SCRIMS = {
   soft: 'linear-gradient(to right, rgba(246,243,237,.94) 0%, rgba(246,243,237,.72) 34%, rgba(246,243,237,.12) 70%, rgba(246,243,237,0) 100%)',
   standard: 'linear-gradient(to right, rgba(246,243,237,.97) 0%, rgba(246,243,237,.88) 38%, rgba(246,243,237,.42) 66%, rgba(246,243,237,0) 92%)',
@@ -99,7 +111,7 @@ const SCRIMS = {
 };
 
 class Component extends DCLogic {
-  state = { email: '', error: '', submitted: false, announcement: '' };
+  state = { email: '', error: '', submitted: false, submitting: false, announcement: '' };
   imgRef = React.createRef();
   panelRef = React.createRef();
 
@@ -140,15 +152,26 @@ class Component extends DCLogic {
   componentWillUnmount() { window.removeEventListener('resize', this._onResize); }
   componentDidUpdate() { this.syncLayout(); }
 
-  submit = (e) => {
+  submit = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
-    if (this.state.submitted) return;
+    if (this.state.submitted || this.state.submitting) return;
     const v = this.state.email.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
       this.setState({ error: 'Enter a valid email address', announcement: 'Enter a valid email address.' });
       return;
     }
-    this.setState({ submitted: true, error: '', announcement: 'You are on the list. We will send one email when the collection drops.' });
+    this.setState({ submitting: true, error: '', announcement: 'Sending…' });
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ email: v, _subject: 'New FL:W+ coming soon signup' })
+      });
+      if (!res.ok) throw new Error('Formspree request failed: ' + res.status);
+      this.setState({ submitted: true, submitting: false, error: '', announcement: 'You are on the list. We will send one email when the collection drops.' });
+    } catch (err) {
+      this.setState({ submitting: false, error: 'Something went wrong — please try again', announcement: 'Something went wrong. Please try again.' });
+    }
   };
 
   renderVals() {
@@ -162,9 +185,11 @@ class Component extends DCLogic {
       announcement: this.state.announcement,
       submitted: this.state.submitted,
       notSubmitted: !this.state.submitted,
+      submitting: this.state.submitting,
       showSignoff: this.props.showSignoff ?? true,
       buttonVariant: this.props.buttonVariant || 'primary',
       buttonStyle: { minHeight: '44px' },
+      buttonLabel: this.state.submitting ? 'Sending…' : 'Notify me',
       onEmailChange: (e) => this.setState({ email: e.target.value, error: '', announcement: '' }),
       onSubmit: this.submit
     };
