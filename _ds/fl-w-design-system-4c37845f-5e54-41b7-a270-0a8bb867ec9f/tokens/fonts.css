@@ -1,0 +1,4 @@
+/* FL:W+ typefaces. No binaries were supplied with the brand guidelines; the three
+   named families (Archivo, Newsreader, IBM Plex Mono) are all available on Google Fonts,
+   so we load the genuine families from there rather than substituting. */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap");

@@ -1,0 +1,39 @@
+:root{
+--font-display:"Archivo","Helvetica Neue",Arial,sans-serif;   /* primary */
+--font-editorial:"Newsreader",Georgia,serif;                  /* secondary */
+--font-mono:"IBM Plex Mono",ui-monospace,monospace;           /* utility: SIZE / FABRIC / CARE / SKU */
+
+--fw-regular:400;/* @kind font */
+--fw-medium:500;/* @kind font */
+--fw-semibold:600;/* @kind font */
+--fw-bold:700;/* @kind font */
+--fw-black:800;/* @kind font */
+
+/* Display / editorial / body / utility ladder */
+--size-display-xl:clamp(3.5rem,7vw,6.25rem);
+--size-display-l:clamp(2.75rem,5vw,4rem);
+--size-display-m:2.25rem;
+--size-heading:1.5rem;
+--size-subheading:1.125rem;
+--size-body:1rem;
+--size-body-s:.875rem;
+--size-label:.75rem;
+--size-micro:.6875rem;
+
+--lh-tight:0.98;/* @kind font */
+--lh-snug:1.15;/* @kind font */
+--lh-body:1.55;/* @kind font */
+--lh-loose:1.7;/* @kind font */
+
+/* Tracking: brand labels are set in wide-tracked uppercase mono/Archivo */
+--track-display:-0.02em;/* @kind font */
+--track-body:0;/* @kind font */
+--track-label:0.18em;/* @kind font */
+--track-label-wide:0.32em;/* @kind font */
+
+--text-display:var(--fw-bold) var(--size-display-l)/var(--lh-tight) var(--font-display);
+--text-heading:var(--fw-semibold) var(--size-heading)/var(--lh-snug) var(--font-display);
+--text-quote:var(--fw-regular) var(--size-display-m)/1.2 var(--font-editorial);
+--text-copy:var(--fw-regular) var(--size-body)/var(--lh-body) var(--font-display);
+--text-spec:var(--fw-medium) var(--size-label)/1.4 var(--font-mono);
+}

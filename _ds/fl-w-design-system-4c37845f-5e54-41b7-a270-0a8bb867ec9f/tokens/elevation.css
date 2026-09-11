@@ -1,0 +1,8 @@
+:root{
+/* Shadow is used sparingly — the system prefers hairline rules and tonal blocks. */
+--shadow-none:none;
+--shadow-lift:0 1px 2px rgba(19,19,17,.06),0 2px 8px rgba(19,19,17,.05);
+--shadow-panel:0 8px 32px rgba(19,19,17,.10);
+--shadow-inset-hairline:inset 0 0 0 1px var(--border-hairline);
+--blur-glass:saturate(120%) blur(14px);/* @kind other */
+}

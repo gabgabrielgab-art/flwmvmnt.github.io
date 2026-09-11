@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FL:W+ — Coming soon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/styles.css">
+<script src="_ds/fl-w-design-system-4c37845f-5e54-41b7-a270-0a8bb867ec9f/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; min-height: 100%; background: var(--bone); }
+  /* Fit-to-screen by default, but never trap content: at 200% zoom or with
+     large-text settings the page scrolls instead of clipping (WCAG 1.4.4 / 1.4.10). */
+  body { overflow-x: hidden; overflow-y: auto; }
+  *, *::before, *::after { box-sizing: border-box; }
+  a { color: var(--onyx); text-decoration: none; }
+  a:hover { box-shadow: inset 0 -1px 0 var(--onyx); }
+  :focus-visible { outline: 2px solid var(--onyx); outline-offset: 2px; }
+  @keyframes flwRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; }
+  }
+</style>
+</helmet>
+
+<main style="position: relative; min-height: 100svh; overflow: hidden; background: var(--bone); font-family: var(--font-display); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(20px, 4vh, 48px); padding: clamp(20px, 3vh, 48px) clamp(20px, 4vw, 56px);">
+
+  <img ref="{{ imgRef }}" src="assets/silhouettes-in-motion.jpg" alt="Three FL:W+ athletes silhouetted mid-jump against a bone-coloured wall" style="position: absolute; top: 0; right: 0; bottom: 0; width: 84%; height: 100%; object-fit: contain; object-position: 100% 100%; transform: scale(1.34); transform-origin: 88% 100%;">
+
+  <div aria-hidden="true" style="{{ scrimStyle }}"></div>
+
+  <header style="position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; animation: flwRise 600ms cubic-bezier(.2,0,.2,1) both;">
+    <x-import component-from-global-scope="FLWDesignSystem_4c3784.Wordmark" size="30" tone="ink" descriptor="MOBILITY / FLEXIBILITY / SUPPORT" hint-size="170px,50px"></x-import>
+    <p style="margin: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; text-transform: uppercase; letter-spacing: .28em; color: var(--graphite); text-align: right;">COMING SOON<br>FLWMVMNT.COM</p>
+  </header>
+
+  <div></div>
+
+  <div ref="{{ panelRef }}" style="position: relative; display: flex; flex-direction: column; gap: clamp(14px, 2vh, 24px); width: min(620px, 100%); animation: flwRise 600ms cubic-bezier(.2,0,.2,1) 80ms both;">
+
+    <h1 style="margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, min(5.4vw, 7.4vh), 62px); line-height: .98; letter-spacing: -.025em; color: var(--onyx); text-transform: uppercase; text-wrap: balance;">Engineered for every body in #MVMNT</h1>
+
+    <p style="margin: 0; max-width: 58ch; font-size: clamp(16px, 1.35vw, 18px); line-height: 1.55; color: var(--graphite); text-wrap: pretty;">Performance athleisure made to move with you. Stretch that follows every direction you go, seams that stay comfortable under load, and a fit designed for real bodies. First collection lands 2027.</p>
+
+    <div aria-hidden="true" style="height: 1px; background: var(--chalk);"></div>
+
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ onSubmit }}" novalidate="{{ true }}" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
+        <div style="flex: 1 1 260px; min-width: 0;">
+          <x-import component-from-global-scope="FLWDesignSystem_4c3784.Input" label="Email address — be first through the door" type="email" placeholder="name@domain.com" value="{{ email }}" onChange="{{ onEmailChange }}" error="{{ error }}" hint-size="100%,72px"></x-import>
+        </div>
+        <x-import component-from-global-scope="FLWDesignSystem_4c3784.Button" variant="{{ buttonVariant }}" size="m" type="submit" onClick="{{ onSubmit }}" style="{{ buttonStyle }}" hint-size="150px,46px">Notify me</x-import>
+      </form>
+    </sc-if>
+
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: clamp(14px, 2vh, 20px) 20px; border: 1px solid var(--chalk); border-radius: var(--radius-card); background: rgba(246,243,237,.5); animation: flwRise 360ms cubic-bezier(.2,0,.2,1) both;">
+        <p style="margin: 0; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .22em; color: var(--graphite);">You're on the list</p>
+        <p style="margin: 0; font-size: clamp(17px, 1.9vh, 20px); line-height: 1.3; color: var(--onyx); letter-spacing: -.01em; overflow-wrap: anywhere;">{{ email }}</p>
+        <p style="margin: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; letter-spacing: .04em; color: var(--graphite);">One email when the collection drops. Nothing before it.</p>
+      </div>
+    </sc-if>
+
+    <div aria-live="polite" style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;">{{ announcement }}</div>
+
+    <sc-if value="{{ showSignoff }}" hint-placeholder-val="{{ true }}">
+      <p style="margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(12px, 1.05vw, 14px); line-height: 1.4; text-transform: uppercase; letter-spacing: .2em; color: var(--onyx);">JOIN THE #MVMNT. BE THE #RVLTN</p>
+    </sc-if>
+
+  </div>
+</main>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroImage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Silhouettes in motion&quot;,&quot;Split lunge&quot;,&quot;Fabric macro&quot;],&quot;default&quot;:&quot;Silhouettes in motion&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Art direction&quot;},&quot;scrimIntensity&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;soft&quot;,&quot;standard&quot;,&quot;heavy&quot;],&quot;default&quot;:&quot;soft&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Art direction&quot;},&quot;panelOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0.2,&quot;max&quot;:1,&quot;step&quot;:0.02,&quot;default&quot;:0.2,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Art direction&quot;},&quot;buttonVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;primary&quot;,&quot;accent&quot;,&quot;ghost&quot;,&quot;reverse&quot;],&quot;default&quot;:&quot;accent&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Signup&quot;},&quot;showSignoff&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Signup&quot;}}">
+const IMAGES = {
+  'Silhouettes in motion': 'assets/silhouettes-in-motion.jpg',
+  'Split lunge': 'assets/hero-split-lunge.jpg',
+  'Fabric macro': 'assets/fabric-macro.jpg'
+};
+const SCRIMS = {
+  soft: 'linear-gradient(to right, rgba(246,243,237,.94) 0%, rgba(246,243,237,.72) 34%, rgba(246,243,237,.12) 70%, rgba(246,243,237,0) 100%)',
+  standard: 'linear-gradient(to right, rgba(246,243,237,.97) 0%, rgba(246,243,237,.88) 38%, rgba(246,243,237,.42) 66%, rgba(246,243,237,0) 92%)',
+  heavy: 'linear-gradient(to right, rgba(246,243,237,.99) 0%, rgba(246,243,237,.95) 46%, rgba(246,243,237,.7) 74%, rgba(246,243,237,.18) 100%)'
+};
+
+class Component extends DCLogic {
+  state = { email: '', error: '', submitted: false, announcement: '' };
+  imgRef = React.createRef();
+  panelRef = React.createRef();
+
+  syncLayout() {
+    // Narrow viewports: `contain` in an 84%-wide box shrinks the frame to almost
+    // nothing behind the type. Fill the screen instead — and because the copy
+    // then sits over photography, give it an opaque Bone panel so every string
+    // keeps full-contrast ink on a solid ground rather than relying on the scrim.
+    const narrow = window.innerWidth < 760;
+    const el = this.imgRef.current;
+    if (el) {
+      const src = IMAGES[this.props.heroImage] || IMAGES['Silhouettes in motion'];
+      if (!el.getAttribute('src').endsWith(src)) el.setAttribute('src', src);
+      Object.assign(el.style, narrow
+        ? { top: '0', right: '0', bottom: '0', width: '100%', height: '100%',
+            objectFit: 'cover', objectPosition: '72% 22%', transform: 'none' }
+        : { top: '0', right: '0', bottom: '0', width: '84%', height: '100%',
+            objectFit: 'contain', objectPosition: '100% 100%',
+            transform: 'scale(1.34)', transformOrigin: '88% 100%' });
+    }
+    // Glass panel: the design system's own header recipe — Bone at 88% behind
+    // --blur-glass — so ink keeps its contrast over photography.
+    const panel = this.panelRef.current;
+    if (panel) {
+      Object.assign(panel.style, {
+        background: 'rgba(246,243,237,' + (this.props.panelOpacity ?? 0.58) + ')',
+        backdropFilter: 'saturate(130%) blur(22px)',
+        WebkitBackdropFilter: 'saturate(130%) blur(22px)',
+        border: '1px solid var(--chalk)',
+        borderRadius: 'var(--radius-card)',
+        boxShadow: 'var(--shadow-lift)',
+        padding: narrow ? '20px' : 'clamp(22px, 3.2vh, 34px)',
+        margin: '0'
+      });
+    }
+  }
+  componentDidMount() {
+    this.syncLayout();
+    this._onResize = () => this.syncLayout();
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); }
+  componentDidUpdate() { this.syncLayout(); }
+
+  submit = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    if (this.state.submitted) return;
+    const v = this.state.email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+      this.setState({ error: 'Enter a valid email address', announcement: 'Enter a valid email address.' });
+      return;
+    }
+    this.setState({ submitted: true, error: '', announcement: 'You are on the list. We will send one email when the collection drops.' });
+  };
+
+  renderVals() {
+    const scrim = SCRIMS[this.props.scrimIntensity] || SCRIMS.soft;
+    return {
+      imgRef: this.imgRef,
+      panelRef: this.panelRef,
+      scrimStyle: 'position: absolute; inset: 0; pointer-events: none; background: ' + scrim + ';',
+      email: this.state.email,
+      error: this.state.error,
+      announcement: this.state.announcement,
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      showSignoff: this.props.showSignoff ?? true,
+      buttonVariant: this.props.buttonVariant || 'primary',
+      buttonStyle: { minHeight: '44px' },
+      onEmailChange: (e) => this.setState({ email: e.target.value, error: '', announcement: '' }),
+      onSubmit: this.submit
+    };
+  }
+}
+
+</script>
+</body>
+</html>

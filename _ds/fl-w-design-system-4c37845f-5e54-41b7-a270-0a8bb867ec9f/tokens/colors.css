@@ -1,0 +1,38 @@
+:root{
+/* --- Neutral core (from Brand Guidelines 05 — Colour) --- */
+--onyx:#131311;      /* primary ink, reversed grounds */
+--graphite:#4A4A45;  /* body copy, secondary UI */
+--clay:#B9AEA0;      /* tonal blocks, packaging, lookbook */
+--chalk:#E4DFD6;     /* rules, dividers, quiet fills */
+--bone:#F6F3ED;      /* default ground */
+
+/* --- Accent range: ONE live at a time. Current: Cobalt --- */
+--brass:#86622B;     /* hardware, heritage — Bone type, 5.1:1 */
+--oxblood:#6E1A1F;   /* conviction, winter — Bone type, 10.4:1 */
+--pine:#17453A;      /* calm, club — Bone type, 9.7:1 */
+--cobalt:#2F5FD0;    /* speed, competition — Bone type, 5.2:1 */
+--rust:#B5502F;      /* warmth, outdoor — Bone type, 4.6:1 */
+--amber:#E0A126;     /* energy, community — Onyx type, 7.5:1 */
+--mist:#A8C6D8;      /* tonal, studio — Onyx type, 9.7:1 */
+
+/* --- Live accent alias. Reassign these two to swap the season. --- */
+--accent:var(--cobalt);
+--accent-on:var(--bone);
+
+/* --- Semantic aliases --- */
+--surface-ground:var(--bone);
+--surface-raised:#FFFFFF;
+--surface-tonal:var(--clay);
+--surface-inverse:var(--onyx);
+--surface-accent:var(--accent);
+--text-primary:var(--onyx);
+--text-body:var(--graphite);
+--text-quiet:#7C7A72;
+--text-on-inverse:var(--bone);
+--text-on-accent:var(--accent-on);
+--border-hairline:var(--chalk);
+--border-strong:var(--onyx);
+--border-quiet:rgba(19,19,17,.12);
+--overlay-scrim:rgba(19,19,17,.55);
+--protection-gradient:linear-gradient(to top,rgba(19,19,17,.72) 0%,rgba(19,19,17,0) 62%);/* @kind color */
+}
