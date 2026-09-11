@@ -35,7 +35,7 @@
 
 <main style="position: relative; min-height: 100svh; overflow: hidden; background: var(--bone); font-family: var(--font-display); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(20px, 4vh, 48px); padding: clamp(20px, 3vh, 48px) clamp(20px, 4vw, 56px);">
 
-  <img ref="{{ imgRef }}" src="assets/silhouettes-in-motion.jpg" alt="Three FL:W+ athletes silhouetted mid-jump against a bone-coloured wall" style="position: absolute; top: 0; right: 0; bottom: 0; width: 84%; height: 100%; object-fit: contain; object-position: 100% 100%; transform: scale(1.34); transform-origin: 88% 0%;">
+  <img ref="{{ imgRef }}" src="assets/silhouettes-in-motion.jpg" alt="Three FL:W+ athletes silhouetted mid-jump against a bone-coloured wall" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%;">
 
   <div aria-hidden="true" style="{{ scrimStyle }}"></div>
 
@@ -59,7 +59,7 @@
         <div style="flex: 1 1 260px; min-width: 0;">
           <x-import component-from-global-scope="FLWDesignSystem_4c3784.Input" label="Email address — be first through the door" type="email" placeholder="name@domain.com" value="{{ email }}" onChange="{{ onEmailChange }}" error="{{ error }}" hint-size="100%,72px"></x-import>
         </div>
-        <x-import component-from-global-scope="FLWDesignSystem_4c3784.Button" variant="{{ buttonVariant }}" size="m" type="submit" onClick="{{ onSubmit }}" style="{{ buttonStyle }}" hint-size="150px,46px">Notify me</x-import>
+        <x-import component-from-global-scope="FLWDesignSystem_4c3784.Button" variant="{{ buttonVariant }}" size="m" type="submit" style="{{ buttonStyle }}" hint-size="150px,46px">Notify me</x-import>
       </form>
     </sc-if>
 
@@ -87,6 +87,11 @@ const IMAGES = {
   'Split lunge': 'assets/hero-split-lunge.jpg',
   'Fabric macro': 'assets/fabric-macro.jpg'
 };
+const IMAGE_ALT = {
+  'Silhouettes in motion': 'Three FL:W+ athletes silhouetted mid-jump against a bone-coloured wall',
+  'Split lunge': 'An FL:W+ athlete mid split-lunge, fabric stretching with the movement',
+  'Fabric macro': 'Macro detail of FL:W+ performance fabric'
+};
 const SCRIMS = {
   soft: 'linear-gradient(to right, rgba(246,243,237,.94) 0%, rgba(246,243,237,.72) 34%, rgba(246,243,237,.12) 70%, rgba(246,243,237,0) 100%)',
   standard: 'linear-gradient(to right, rgba(246,243,237,.97) 0%, rgba(246,243,237,.88) 38%, rgba(246,243,237,.42) 66%, rgba(246,243,237,0) 92%)',
@@ -99,24 +104,17 @@ class Component extends DCLogic {
   panelRef = React.createRef();
 
   syncLayout() {
-    // Narrow viewports: `contain` in an 84%-wide box shrinks the frame to almost
-    // nothing behind the type. Fill the screen instead — and because the copy
-    // then sits over photography, give it an opaque Bone panel so every string
-    // keeps full-contrast ink on a solid ground rather than relying on the scrim.
+    // The hero image is a fixed full-bleed background (100% x 100%, object-fit:
+    // cover) at every breakpoint — its own CSS handles that, no JS needed. All
+    // this does is keep src/alt in sync when the heroImage art-direction prop
+    // changes.
     const narrow = window.innerWidth < 760;
-    // Wide layouts: scale from the top edge, not the bottom, so growing the
-    // image never pushes the athletes' heads above the frame — it's the
-    // ground/legs that give way instead.
     const el = this.imgRef.current;
     if (el) {
-      const src = IMAGES[this.props.heroImage] || IMAGES['Silhouettes in motion'];
+      const key = this.props.heroImage in IMAGES ? this.props.heroImage : 'Silhouettes in motion';
+      const src = IMAGES[key];
       if (!el.getAttribute('src').endsWith(src)) el.setAttribute('src', src);
-      Object.assign(el.style, narrow
-        ? { top: '0', right: '0', bottom: '0', width: '100%', height: '100%',
-            objectFit: 'cover', objectPosition: '72% 22%', transform: 'none' }
-        : { top: '0', right: '0', bottom: '0', width: '84%', height: '100%',
-            objectFit: 'contain', objectPosition: '100% 100%',
-            transform: 'scale(1.34)', transformOrigin: '88% 0%' });
+      el.alt = IMAGE_ALT[key];
     }
     // Glass panel: the design system's own header recipe — Bone at 88% behind
     // --blur-glass — so ink keeps its contrast over photography.
