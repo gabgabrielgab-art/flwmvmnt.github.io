@@ -109,6 +109,7 @@ const IMAGE_ALT = {
 // verified (SPF/DKIM) with a transactional email provider, which is a
 // separate, bigger setup than Formspree covers on its own.
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+const FORM_CONFIGURED = !FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID');
 
 const SCRIMS = {
   soft: 'linear-gradient(to right, rgba(246,243,237,.94) 0%, rgba(246,243,237,.72) 34%, rgba(246,243,237,.12) 70%, rgba(246,243,237,0) 100%)',
@@ -166,6 +167,14 @@ class Component extends DCLogic {
       this.setState({ error: 'Enter a valid email address', announcement: 'Enter a valid email address.' });
       return;
     }
+    if (!FORM_CONFIGURED) {
+      // Distinct from a network/server failure on purpose: this is a deploy
+      // issue (FORMSPREE_ENDPOINT still has its placeholder), not something
+      // a visitor can fix by retrying, so don't tell them to retry.
+      console.error('[FL:W+] FORMSPREE_ENDPOINT is still the YOUR_FORM_ID placeholder — signups are not being sent anywhere. Replace it with a real Formspree form ID.');
+      this.setState({ error: "Signup isn't connected yet — please check back soon", announcement: "Signup isn't connected yet. Please check back soon." });
+      return;
+    }
     this.setState({ submitting: true, error: '', announcement: 'Sending…' });
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
@@ -173,9 +182,19 @@ class Component extends DCLogic {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ email: v, _subject: 'New FL:W+ coming soon signup' })
       });
-      if (!res.ok) throw new Error('Formspree request failed: ' + res.status);
+      if (!res.ok) {
+        // Surface Formspree's own reason (e.g. a disabled/unconfirmed form,
+        // a validation rule) when it sends one, instead of a bare status code.
+        let detail = '';
+        try {
+          const body = await res.json();
+          detail = body?.errors?.map((er) => er.message).filter(Boolean).join('; ') || '';
+        } catch {}
+        throw new Error('Formspree request failed: ' + res.status + (detail ? ' — ' + detail : ''));
+      }
       this.setState({ submitted: true, submitting: false, error: '', announcement: 'You are on the list. We will send one email when the collection drops.' });
     } catch (err) {
+      console.error('[FL:W+] signup submission failed:', err);
       this.setState({ submitting: false, error: 'Something went wrong — please try again', announcement: 'Something went wrong. Please try again.' });
     }
   };
